@@ -17,6 +17,10 @@ const asObject = (anecdote) => {
   }
 }
 
+const orderVotes = (votesArray) => {
+  return votesArray.sort((a, b) => b.votes - a.votes)
+}
+
 export const voteAction = (id) => {
   return {
     type: 'VOTE',
@@ -25,23 +29,25 @@ export const voteAction = (id) => {
 }
 
 export const createAnecdote = (content) => {
-  console.log('asobject content', asObject(content))
   return {
     type: 'CREATE_ANECDOTE',
     payload: asObject(content)
   }
 }
 
-const initialState = anecdotesAtStart.map(asObject)
+const initialState = orderVotes(anecdotesAtStart.map(asObject))
 
 const reducer = (state = initialState, action) => {
   console.log('state now: ', state)
   console.log('action', action)
   switch(action.type) {
-    case 'VOTE':
-      return state.map( anec => anec.id === action.payload.id ? {... anec, votes: anec.votes + 1} : anec )
+    case 'VOTE': {
+      const newState = state.map( anec => anec.id === action.payload.id ? {... anec, votes: anec.votes + 1} : anec )
+      const sortedNewState = orderVotes(newState)
+      return sortedNewState
+    } 
     case 'CREATE_ANECDOTE':
-      return state.concat(action.payload)
+      return orderVotes(state.concat(action.payload))
     default:
       return state
   }
