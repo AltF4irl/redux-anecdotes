@@ -1,14 +1,13 @@
-import { useSelector, useDispatch } from "react-redux"
-import { setNotification } from "../reducers/notificationReducer"
+import { useSelector } from "react-redux"
 
 const Notification = () => {
-  const dispatcher = useDispatch()
-  dispatcher(setNotification('lololo'))
-  const notification = useSelector(state => state.notification)
+  const notification = useSelector(state => state.notification.content)
+  const isVisible = useSelector(state => state.notification.visibility)
   const style = {
     border: 'solid',
     padding: 10,
-    borderWidth: 1
+    borderWidth: 1,
+    display: isVisible ? '' : 'none'
   }
   return (
     <div style={style}>
