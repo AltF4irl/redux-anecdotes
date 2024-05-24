@@ -1,3 +1,5 @@
+import { createSlice } from "@reduxjs/toolkit"
+
 const anecdotesAtStart = [
   'If it hurts, do it more often',
   'Adding manpower to a late software project makes it later!',
@@ -21,36 +23,59 @@ const orderVotes = (votesArray) => {
   return votesArray.sort((a, b) => b.votes - a.votes)
 }
 
-export const voteAction = (id) => {
-  return {
-    type: 'VOTE',
-    payload: { id }
-  }
-}
-
-export const createAnecdote = (content) => {
-  return {
-    type: 'CREATE_ANECDOTE',
-    payload: asObject(content)
-  }
-}
-
 const initialState = orderVotes(anecdotesAtStart.map(asObject))
 
-const anecdoteReducer = (state = initialState, action) => {
-  console.log('state now: ', state)
-  console.log('action', action)
-  switch(action.type) {
-    case 'VOTE': {
-      const newState = state.map( anec => anec.id === action.payload.id ? {... anec, votes: anec.votes + 1} : anec )
+
+const anecdoteSlice = createSlice({
+  name: 'anecdotes',
+  initialState,
+  reducers: {
+    voteAction(state, action) {
+      const id = action.payload
+      const newState = state.map( anec => anec.id === id ? {... anec, votes: anec.votes + 1} : anec )
       const sortedNewState = orderVotes(newState)
       return sortedNewState
-    } 
-    case 'CREATE_ANECDOTE':
-      return orderVotes(state.concat(action.payload))
-    default:
-      return state
+    },
+    createAnecdote(state, action) {
+      state.push(asObject(action.payload))
+      orderVotes(state)
+    }
   }
-}
+})
 
-export default anecdoteReducer
+
+
+// export const voteAction = (id) => {
+//   return {
+//     type: 'VOTE',
+//     payload: { id }
+//   }
+// }
+
+// export const createAnecdote = (content) => {
+//   return {
+//     type: 'CREATE_ANECDOTE',
+//     payload: asObject(content)
+//   }
+// }
+
+
+
+// const anecdoteReducer = (state = initialState, action) => {
+//   console.log('state now: ', state)
+//   console.log('action', action)
+//   switch(action.type) {
+//     case 'VOTE': {
+//       const newState = state.map( anec => anec.id === action.payload.id ? {... anec, votes: anec.votes + 1} : anec )
+//       const sortedNewState = orderVotes(newState)
+//       return sortedNewState
+//     } 
+//     case 'CREATE_ANECDOTE':
+//       return orderVotes(state.concat(action.payload))
+//     default:
+//       return state
+//   }
+// }
+
+export const { createAnecdote, voteAction } = anecdoteSlice.actions
+export default anecdoteSlice.reducer
