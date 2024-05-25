@@ -27,7 +27,7 @@ const AnecdoteList = () => {
                 <div>
                     {anecdote.content}
                 </div>
-                <div>
+                <div className='vote'>
                     has {anecdote.votes}
                     <button onClick={() => vote(anecdote.id)}>vote</button>
                 </div>

@@ -10,7 +10,7 @@ const FilterBar = () => {
     }
 
     return (
-        <div>
+        <div className='filterBar'>
             Filter
             <input 
                 type="text"
