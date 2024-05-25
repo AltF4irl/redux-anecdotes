@@ -14,6 +14,7 @@ const notificationSlice = createSlice({
                 content: action.payload,
                 visibility: true
             }
+
             return state
         },
         unsetNotification(state, action) {
@@ -25,4 +26,12 @@ const notificationSlice = createSlice({
 })
 
 export const {setNotification, unsetNotification} = notificationSlice.actions
+export const throwNotification = (content) => {
+    return dispatch => {
+        dispatch(setNotification(content))
+        setTimeout(() => {
+            dispatch(unsetNotification(true))
+        }, 5000);
+    }
+}
 export default notificationSlice.reducer
