@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import { voteAction } from '../reducers/anecdoteReducer'
+import { addVote } from '../reducers/anecdoteReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { setNotification, unsetNotification } from '../reducers/notificationReducer'
 
@@ -12,9 +12,10 @@ const AnecdoteList = () => {
     const dispatch = useDispatch()
     
     const vote = (id) => {
-        console.log('vote', id)
-        dispatch(voteAction(id))
-        const votedAnecdoteContent = anecdotes.filter(anec => anec.id === id).map(vanec => vanec.content)
+        const votedAnecdote = anecdotes.filter(anec => anec.id === id)
+        const votedAnecdoteContent = votedAnecdote.map(vanec => vanec.content)
+        console.log('votedanecdote', votedAnecdote, id)
+        dispatch(addVote(votedAnecdote[0]))
         dispatch(setNotification(`You have voted for "${ votedAnecdoteContent }"`))
         setTimeout(() => {
             dispatch(unsetNotification(true))
