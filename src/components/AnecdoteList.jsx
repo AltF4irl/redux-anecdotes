@@ -16,7 +16,7 @@ const AnecdoteList = () => {
         const votedAnecdoteContent = votedAnecdote.map(vanec => vanec.content)
         console.log('votedanecdote', votedAnecdote, id)
         dispatch(addVote(votedAnecdote[0]))
-        dispatch(throwNotification(`You have voted for "${ votedAnecdoteContent }"`))
+        dispatch(throwNotification(`You have voted for "${ votedAnecdoteContent }"`, 5))
     }
 
     const Anecdote = ({anecdote}) => {

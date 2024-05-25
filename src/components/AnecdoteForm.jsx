@@ -9,7 +9,7 @@ const AnecdoteForm = () => {
         const anecdote = e.target.anecdote.value
         e.target.anecdote.value = ''
         dispatch(createAnecdote(anecdote))
-        dispatch(throwNotification(`You have created "${ anecdote }"`))
+        dispatch(throwNotification(`You have created "${ anecdote }"`, 5))
     }
 
     return(
